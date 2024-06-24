@@ -88,13 +88,17 @@ LogPrefix = {
 
 ##################
 ###ENV Variables##
-items_file = "config\\items.json".replace("\\", os.sep)
-effects_file = "config\\effects.json".replace("\\", os.sep)
-entities_folder = "Assets\\Core\\Entities".replace("\\", os.sep)  # TODO: Remove
-items_folder = "Assets\\Core\\Items".replace("\\", os.sep)  # TODO: Remove
-loottablepath = "Assets\\Core\\Loottables".replace("\\", os.sep)  # TODO: Remove
-aitablepath = "Assets\\Core\\AI".replace("\\", os.sep)
-log_file = f"logs\\{today}.log".replace("\\", os.sep)
+items_file = "src\\TAE\\config\\items.json".replace("\\", os.sep)
+effects_file = "src\\TAE\\config\\effects.json".replace("\\", os.sep)
+entities_folder = "src\\TAE\\Assets\\Core\\Entities".replace(
+    "\\", os.sep
+)  # TODO: Remove
+items_folder = "src\\TAE\\Assets\\Core\\Items".replace("\\", os.sep)  # TODO: Remove
+loottablepath = "src\\TAE\\Assets\\Core\\Loottables".replace(
+    "\\", os.sep
+)  # TODO: Remove
+aitablepath = "src\\TAE\\Assets\\Core\\AI".replace("\\", os.sep)
+log_file = f"src\\TAE\\logs\\{today}.log".replace("\\", os.sep)
 root_folder = get_project_root()
 ##################
 
