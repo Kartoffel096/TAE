@@ -6,7 +6,8 @@ import os.path
 import os
 from datetime import date
 from pathlib import Path
-from Utils.tcolors import white, red, yellow, purple, cyan, green
+
+from ..Utils.tcolors import white, red, yellow, purple, cyan, green
 
 ##################
 #####Init Vars####

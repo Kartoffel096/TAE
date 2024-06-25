@@ -13,8 +13,8 @@ from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from pystyle import Center, Box
 
-from Utils.pr import Pr
-from Utils.logger import Logger
+from ..Utils.pr import Pr
+from ..Utils.logger import Logger
 
 if TYPE_CHECKING:
     from Entities import Entity

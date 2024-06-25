@@ -5,28 +5,30 @@ import os
 import inspect
 import time
 from datetime import datetime
-from Utils.tcolors import *
-from config import (
-    log_file,
-    logging,
-    consoleLogging,
-    fileLogging,
-    consoleLogLevel,
-    FileLogLevel,
-    LogByModule,
-    logLevels,
-    LogPrefix,
-    LogColors,
-    DefaultLogLevel,
-    ShowOnlyLogText,
-)
+
+# from TAE.Utils.tcolors import *
+# from TAE.config import (
+#     log_file,
+#     logging,
+#     consoleLogging,
+#     fileLogging,
+#     consoleLogLevel,
+#     FileLogLevel,
+#     LogByModule,
+#     logLevels,
+#     LogPrefix,
+#     LogColors,
+#     DefaultLogLevel,
+#     ShowOnlyLogText,
+# )
+import TAE.config
 
 
 class Logger:
     """Logger Class"""
 
     def log(
-        text: str = "", errlvl: int = DefaultLogLevel
+        text: str = "", errlvl: int = config.DefaultLogLevel
     ) -> int:  # pylint: disable=R1710
         """Logging function"""
 
@@ -34,10 +36,10 @@ class Logger:
             Prints Debug Information into Console
         Args:
             text (str): Text to be Displayed. Defaults to "".
-            errlvl (int): Errorlevel defined in config.py | Default to DefaultLogLevel in config.py.
+            errlvl (int): Errorlevel defined in config.py | Default to FileLogLevel.DefaultLogLevel in config.py.
         """
 
-        if not logging:
+        if not config.logging:
             return
         module = inspect.currentframe().f_back.f_globals["__name__"]
         function = inspect.stack()[1].function
@@ -46,24 +48,24 @@ class Logger:
 
         logmessage = Log(message, errlvl, module, function, line_number)
 
-        if consoleLogging:
-            if logmessage.loglevel >= consoleLogLevel:
-                if ShowOnlyLogText:
+        if config.consoleLogging:
+            if logmessage.loglevel >= config.consoleLogLevel:
+                if FileLogLevel.ShowOnlyLogText:
                     print(logmessage.stronly)
                 else:
                     print(logmessage)
 
-        if fileLogging:
-            if logmessage.loglevel >= FileLogLevel:
-                if LogByModule:  # pylint: disable=R1705
-                    _log_file = log_file.split("/".replace(os.sep))
+        if config.fileLogging:
+            if logmessage.loglevel >= FileLogLevel.consoleLogLevel:
+                if FileLogLevel.LogByModule:  # pylint: disable=R1705
+                    _log_file = config.log_file.split("/".replace(os.sep))
                     _log_file.insert(1, f"/{module} - ".replace(os.sep))
                     _log_file = "".join(_log_file)
                     with open(_log_file, "a") as log:
                         log.write(logmessage.raw)
                     return 0
                 else:
-                    with open(log_file, "a") as log:
+                    with open(config.log_file, "a") as log:
                         log.write(logmessage.raw)
                     return 0
         return 1
@@ -133,11 +135,11 @@ class Log:
         """The Line Number from which the Message was called"""
         self.timestamp = datetime.now().strftime("%H:%M:%S")
         """The Timestamp of the logged Message"""
-        self.raw = f"{self.timestamp} - [{self.line_number}] {logLevels[self.loglevel]} - {self.module} - {self.function}: {self.logstr}\n"
+        self.raw = f"{self.timestamp} - [{self.line_number}] {FileLogLevel.logLevels[self.loglevel]} - {self.module} - {self.function}: {self.logstr}\n"
         """Logmessage in Raw format"""
-        self.stronly = f"{LogColors[self.loglevel](self.logstr)}"
+        self.stronly = f"{FileLogLevel.LogColors[self.loglevel](self.logstr)}"
         """Colorized LogMessage Only"""
 
     def __str__(self) -> str:
-        stack = f"[{self.line_number}] {logLevels[self.loglevel]:<7} - {self.module}.{self.function} : "
-        return f"{LogPrefix[self.loglevel]} {LogColors[self.loglevel](stack)} {self.logstr}"
+        stack = f"[{self.line_number}] {FileLogLevel.logLevels[self.loglevel]:<7} - {self.module}.{self.function} : "
+        return f"{FileLogLevel.LogPrefix[self.loglevel]} {FileLogLevel.LogColors[self.loglevel](stack)} {self.logstr}"

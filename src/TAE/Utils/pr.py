@@ -6,7 +6,8 @@ import inspect
 from datetime import datetime, date
 from pystyle import Colors, Colorate, Box, Center, Write
 from huepy import *
-from config import dbg, log_file, dbg_level, logbymodule, exclude_dbg_lvl
+
+import TAE.config
 
 
 class Pr:
@@ -175,18 +176,18 @@ class Pr:
         match errlvl:
             case -1:  # Debug
                 logstr = f"{stack_1}{message}"
-                if exclude_dbg_lvl:
+                if config.exclude_dbg_lvl:
                     logstr = None
-                if dbg_level >= 3:
-                    if dbg:
+                if config.dbg_level >= 3:
+                    if config.dbg:
                         print(
                             f'{info("")} {good("")} \
                                     {str(purple(stack_1))} {message}'
                         )
             case 0:  # Informational
                 logstr = f"{stack0}{message}"
-                if dbg_level >= 2:
-                    if dbg:
+                if config.dbg_level >= 2:
+                    if config.dbg:
                         print(
                             f'{info("")} {good("")} \
                                     {str(green(stack0))} {message}'
@@ -194,8 +195,8 @@ class Pr:
 
             case 1:  # Warning
                 logstr = f"{stack1}{message}"
-                if dbg_level >= 1:
-                    if dbg:
+                if config.dbg_level >= 1:
+                    if config.dbg:
                         print(
                             f'{info("")} {info("")} \
                                     {str(yellow(stack1))} {message}'
@@ -203,8 +204,8 @@ class Pr:
 
             case 2:  # Err
                 logstr = f"{stack2}{message}"
-                if dbg_level >= 0:
-                    if dbg:
+                if config.dbg_level >= 0:
+                    if config.dbg:
                         print(
                             f'{info("")} {bad("")} \
                                     {str(red(stack2))} {message}'
@@ -212,19 +213,19 @@ class Pr:
 
             case 3:  # Highlight
                 logstr = f"{stack2}{message}"
-                if dbg_level >= 0:
-                    if dbg:
+                if config.dbg_level >= 0:
+                    if config.dbg:
                         print(
                             f'{info("")} {cyan("")} \
                                     {str(yellow(stack2))} {message}'
                         )
 
-        with open(log_file, "a") as log:
+        with open(config.log_file, "a") as log:
             if logstr:
                 log.write(f"{timestamp} - {logstr}\n")
 
-        if logbymodule:
-            _log_file = log_file.split("/")
+        if config.logbymodule:
+            _log_file = config.log_file.split("/")
             _log_file.insert(1, f"/{module} - ")
             _log_file = "".join(_log_file)
             with open(_log_file, "a") as log:
